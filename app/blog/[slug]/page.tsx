@@ -1,47 +1,55 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { Calendar, User, ArrowLeft, Share2 } from "lucide-react";
+import { Calendar, User, ArrowLeft } from "lucide-react";
 import { Facebook, Twitter, Linkedin } from "@/components/services/SocialIcons";
-import blogData from "@/data/blog.json";
+import { connectDB } from "@/lib/mongodb";
+import Post from "@/models/Post";
 
 interface Props {
   params: { slug: string };
 }
 
 export async function generateStaticParams() {
-  return blogData.map((post) => ({
+  await connectDB();
+  const posts = await Post.find({ status: "published" }).select("slug").lean();
+  return posts.map((post) => ({
     slug: post.slug,
   }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const post = blogData.find((p) => p.slug === slug);
+  await connectDB();
+  const post = await Post.findOne({ slug, status: "published" }).lean();
   if (!post) return {};
 
   return {
     title: `${post.title} | Care Plus Blog`,
     description: post.excerpt,
     openGraph: {
-      title: post.title,
+      title: post.title as string,
       description: post.excerpt,
-      images: [{ url: post.image }],
+      images: [{ url: (post as any).coverImage || "" }],
       type: "article",
-      publishedTime: post.date,
-      authors: [post.author.name],
     },
   };
 }
 
 export default async function BlogPostPage({ params }: Props) {
   const { slug } = await params;
-  const post = blogData.find((p) => p.slug === slug);
+  await connectDB();
+  
+  const post = await Post.findOne({ slug, status: "published" }).lean();
   if (!post) notFound();
 
-  const recentPosts = blogData
-    .filter((p) => p.slug !== slug)
-    .slice(0, 3);
+  const recentPosts = await Post.find({ slug: { $ne: slug }, status: "published" })
+    .sort({ publishedAt: -1 })
+    .limit(3)
+    .lean();
+
+  const serializedPost = JSON.parse(JSON.stringify(post));
+  const serializedRecent = JSON.parse(JSON.stringify(recentPosts));
 
   return (
     <main className="min-h-screen bg-[#110E10]">
@@ -49,7 +57,8 @@ export default async function BlogPostPage({ params }: Props) {
       {/* Hero / Header */}
       <section className="relative pt-44 pb-20 overflow-hidden bg-[#0A0A0A]">
         <div className="absolute inset-0 z-0 opacity-10">
-          <img src={post.image} alt="" className="w-full h-full object-cover blur-2xl scale-110" />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={serializedPost.coverImage} alt="" className="w-full h-full object-cover blur-2xl scale-110" />
           <div className="absolute inset-0 bg-gradient-to-b from-[#110E10] via-transparent to-[#110E10]"></div>
         </div>
 
@@ -64,22 +73,22 @@ export default async function BlogPostPage({ params }: Props) {
             
             <div className="flex items-center justify-center gap-4 mb-6">
               <span className="px-4 py-1.5 bg-[var(--color-primary)]/10 text-[var(--color-primary)] text-[10px] font-black uppercase tracking-widest rounded-full border border-[var(--color-primary)]/20">
-                {post.category}
+                {serializedPost.category}
               </span>
             </div>
 
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-black text-white mb-10 tracking-tighter uppercase leading-[0.95]">
-              {post.title}
+              {serializedPost.title}
             </h1>
 
             <div className="flex flex-wrap justify-center items-center gap-8 text-[11px] text-white/40 uppercase tracking-[0.2em] font-bold">
               <div className="flex items-center gap-3">
                 <Calendar className="w-4 h-4 text-[var(--color-primary)]" />
-                <span>{new Date(post.date).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}</span>
+                <span>{new Date(serializedPost.publishedAt).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}</span>
               </div>
               <div className="flex items-center gap-3">
                 <User className="w-4 h-4 text-[var(--color-primary)]" />
-                <span>{post.author.name} — {post.author.role}</span>
+                <span>{serializedPost.author?.name} — {serializedPost.author?.role}</span>
               </div>
             </div>
           </div>
@@ -94,11 +103,12 @@ export default async function BlogPostPage({ params }: Props) {
             {/* Post Content */}
             <div className="lg:w-2/3">
               <div className="rounded-3xl overflow-hidden mb-16 shadow-[0_30px_60px_rgba(0,0,0,0.5)] border border-white/5">
-                <img src={post.image} alt={post.title} className="w-full h-auto" />
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={serializedPost.coverImage} alt={serializedPost.title} className="w-full h-auto" />
               </div>
 
               <article className="prose prose-invert prose-lg max-w-none">
-                {post.content.map((block, idx) => {
+                {serializedPost.content.map((block: any, idx: number) => {
                   if (block.type === "heading") {
                     return <h2 key={idx} className="text-white font-black uppercase tracking-tight text-3xl mt-16 mb-8">{block.text}</h2>;
                   }
@@ -147,10 +157,11 @@ export default async function BlogPostPage({ params }: Props) {
                 <div className="p-8 bg-[#1A181A] rounded-2xl border border-white/5">
                   <h4 className="text-white font-black text-xs uppercase tracking-[0.3em] mb-8">Related Insights</h4>
                   <div className="flex flex-col gap-8">
-                    {recentPosts.map((recent) => (
+                    {serializedRecent.map((recent: any) => (
                       <Link key={recent.slug} href={`/blog/${recent.slug}`} className="group flex gap-4 items-center">
                         <div className="w-20 h-20 shrink-0 rounded-xl overflow-hidden border border-white/10 group-hover:border-[var(--color-primary)] transition-all">
-                          <img src={recent.image} alt="" className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-all duration-500 scale-110 group-hover:scale-100" />
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img src={recent.coverImage} alt="" className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-all duration-500 scale-110 group-hover:scale-100" />
                         </div>
                         <div className="flex flex-col gap-1">
                           <span className="text-[9px] text-[var(--color-primary)] font-black uppercase tracking-widest">{recent.category}</span>
@@ -178,37 +189,6 @@ export default async function BlogPostPage({ params }: Props) {
           </div>
         </div>
       </section>
-
-      {/* JSON-LD Schema */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "BlogPosting",
-            "headline": post.title,
-            "description": post.excerpt,
-            "image": post.image,
-            "datePublished": post.date,
-            "author": {
-              "@type": "Person",
-              "name": post.author.name
-            },
-            "publisher": {
-              "@type": "Organization",
-              "name": "Care Plus Auto Repairing",
-              "logo": {
-                "@type": "ImageObject",
-                "url": "https://careplusauto.vercel.app/logo/care-plus-logo.png"
-              }
-            },
-            "mainEntityOfPage": {
-              "@type": "WebPage",
-              "@id": `https://careplusauto.vercel.app/blog/${post.slug}`
-            }
-          })
-        }}
-      />
 
     </main>
   );

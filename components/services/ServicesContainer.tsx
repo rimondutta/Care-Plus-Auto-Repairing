@@ -4,14 +4,13 @@ import { useState } from "react";
 import ServiceFilterBar from "./ServiceFilterBar";
 import ServiceGrid from "./ServiceGrid";
 import { ServiceCategory } from "../../types/service";
-import { servicesData } from "../../data/services";
 
-export default function ServicesContainer() {
+export default function ServicesContainer({ initialServices }: { initialServices: any[] }) {
   const [activeCategory, setActiveCategory] = useState<ServiceCategory>("all");
 
   const resultsCount = activeCategory === "all" 
-    ? servicesData.length 
-    : servicesData.filter(s => s.category === activeCategory).length;
+    ? initialServices.length 
+    : initialServices.filter(s => s.category === activeCategory).length;
 
   return (
     <>
@@ -21,7 +20,7 @@ export default function ServicesContainer() {
         resultsCount={resultsCount}
       />
       <ServiceGrid 
-        services={servicesData} 
+        services={initialServices} 
         activeCategory={activeCategory} 
       />
     </>

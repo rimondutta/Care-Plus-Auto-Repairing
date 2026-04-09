@@ -3,6 +3,7 @@ import { Bai_Jamjuree, Montserrat } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import PublicLayoutWrapper from "@/components/PublicLayoutWrapper";
 
 const baiJamjuree = Bai_Jamjuree({
   variable: "--font-bai-jamjuree",
@@ -65,9 +66,9 @@ export default function RootLayout({
         className="min-h-full flex flex-col bg-[#110E10] text-[#DEDEDE]"
         suppressHydrationWarning
       >
-        <Navbar />
+        <PublicLayoutWrapper><Navbar /></PublicLayoutWrapper>
         {children}
-        <Footer />
+        <PublicLayoutWrapper><Footer /></PublicLayoutWrapper>
 
         {/* Global Schema Markup */}
         <script

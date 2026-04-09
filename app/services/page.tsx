@@ -5,6 +5,8 @@ import ServiceProcess from "../../components/services/ServiceProcess";
 import ServiceCTABanner from "../../components/services/ServiceCTABanner";
 import ServiceFAQ from "../../components/services/ServiceFAQ";
 import ServiceGuarantee from "../../components/services/ServiceGuarantee";
+import { connectDB } from "@/lib/mongodb";
+import Service from "@/models/Service";
 
 export const metadata: Metadata = {
   title: "Our Services | Care Plus Auto Repairing",
@@ -16,7 +18,14 @@ const breadcrumbs = [
   { label: "Services" }
 ];
 
-export default function ServicesPage() {
+export default async function ServicesPage() {
+  await connectDB();
+  const services = await Service.find({ isActive: true }).lean();
+  
+  // Transform MongoDB results to match the frontend expected type if necessary
+  // Standardizing the output to plain objects
+  const serializedServices = JSON.parse(JSON.stringify(services));
+
   return (
     <div className="bg-[#110E10] min-h-screen">
       <main>
@@ -28,7 +37,7 @@ export default function ServicesPage() {
         />
 
         {/* Client side container handling Tabs + Grid + State */}
-        <ServicesContainer />
+        <ServicesContainer initialServices={serializedServices} />
 
         {/* How it Works section */}
         <ServiceProcess />

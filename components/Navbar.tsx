@@ -85,6 +85,7 @@ export default function Navbar() {
           {/* LOGO */}
           <Link href="/" className="flex items-center group shrink-0 mr-4">
             <div className="relative h-12 w-auto min-w-[200px] md:h-16 lg:h-20 transition-transform duration-300 group-hover:scale-105">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img 
                 src="/logo/care-plus-logo.png" 
                 alt="Care Plus Logo" 
@@ -95,11 +96,11 @@ export default function Navbar() {
 
           {/* DESKTOP NAV LINKS */}
           <div className="hidden lg:flex items-center gap-10 uppercase tracking-[0.2em] text-[12px] font-bold h-full">
-            {navLinks.map((link, index) => {
+            {navLinks.map((link) => {
               const active = isActiveLink(link.href);
               return (
                 <Link
-                  key={index}
+                  key={link.name}
                   href={link.href}
                   className={`relative flex items-center h-full transition-all duration-300 group ${active ? "text-[var(--color-primary)]" : "text-white hover:text-[var(--color-primary)]"
                     }`}
@@ -154,7 +155,7 @@ export default function Navbar() {
             const active = isActiveLink(link.href);
             return (
               <Link
-                key={index}
+                key={`mobile-${link.name}`}
                 href={link.href}
                 onClick={() => setMobileMenuOpen(false)}
                 className={`font-black text-4xl uppercase tracking-tighter transition-colors inline-block ${active ? "text-[var(--color-primary)]" : "text-white hover:text-[var(--color-primary)]"

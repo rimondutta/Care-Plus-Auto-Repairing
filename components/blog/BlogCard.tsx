@@ -18,14 +18,29 @@ interface BlogCardProps {
   };
 }
 
-export default function BlogCard({ post }: BlogCardProps) {
+export default function BlogCard({ post }: any) {
+  const title = post.title;
+  const excerpt = post.excerpt;
+  const image = post.coverImage || post.image;
+  const date = post.publishedAt || post.date || new Date().toISOString();
+  const authorName = post.author?.name || "Admin";
+  const category = post.category || "Automotive";
+  const slug = post.slug;
+
+  const formattedDate = new Date(date).toLocaleDateString("en-US", { 
+    month: "long", 
+    day: "numeric", 
+    year: "numeric" 
+  });
+
   return (
     <div className="group flex flex-col bg-[#1A181A] border border-white/5 rounded-2xl overflow-hidden hover:border-[var(--color-primary)]/30 transition-all duration-500 hover:shadow-[0_20px_50px_rgba(0,0,0,0.5)] h-full">
       {/* Image Container */}
       <div className="relative h-64 overflow-hidden">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src={post.image}
-          alt={post.title}
+          src={image}
+          alt={title}
           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[#1A181A] via-transparent to-transparent opacity-60"></div>
@@ -33,7 +48,7 @@ export default function BlogCard({ post }: BlogCardProps) {
         {/* Category Tag */}
         <div className="absolute top-4 left-4">
           <span className="px-4 py-1.5 bg-[var(--color-primary)] text-white text-[10px] font-bold uppercase tracking-widest rounded-full shadow-lg">
-            {post.category}
+            {category}
           </span>
         </div>
       </div>
@@ -43,20 +58,20 @@ export default function BlogCard({ post }: BlogCardProps) {
         <div className="flex items-center gap-6 mb-4 text-[11px] text-white/40 uppercase tracking-widest font-bold">
           <div className="flex items-center gap-2">
             <Calendar className="w-3.5 h-3.5 text-[var(--color-primary)]" />
-            <span>{new Date(post.date).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}</span>
+            <span>{formattedDate}</span>
           </div>
           <div className="flex items-center gap-2">
             <User className="w-3.5 h-3.5 text-[var(--color-primary)]" />
-            <span>{post.author.name}</span>
+            <span>{authorName}</span>
           </div>
         </div>
 
         <h3 className="text-xl font-black text-white mb-4 line-clamp-2 group-hover:text-[var(--color-primary)] transition-colors duration-300 leading-tight">
-          {post.title}
+          {title}
         </h3>
 
         <p className="text-[var(--color-textLight)] text-sm leading-relaxed mb-8 line-clamp-3 opacity-70 group-hover:opacity-100 transition-opacity duration-300">
-          {post.excerpt}
+          {excerpt}
         </p>
 
         <div className="mt-auto">

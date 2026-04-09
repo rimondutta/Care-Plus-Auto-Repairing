@@ -64,13 +64,12 @@ export default function ServiceGrid({ services, activeCategory }: ServiceGridPro
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-[15px] mb-16">
-            {currentServices.map((service, index) => (
+            {currentServices.map((service: any, index: number) => (
               <ServiceCard 
-                key={service.id} 
-                // Fix active state mapping using the index in current view to simulate masonry feel
+                key={service._id || service.slug || index} 
                 service={{
                   ...service,
-                  isActive: [0, 2, 3, 5, 6, 8].includes(index) // Alternating red borders logic
+                  isActive: [0, 2, 3, 5, 6, 8].includes(index)
                 }} 
                 index={index} 
               />

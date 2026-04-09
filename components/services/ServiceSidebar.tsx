@@ -1,12 +1,15 @@
 import Link from "next/link";
 import { Phone } from "lucide-react";
-import { servicesData } from "../../data/services";
+import { connectDB } from "@/lib/mongodb";
+import Service from "@/models/Service";
 
 interface ServiceSidebarProps {
   currentSlug: string;
 }
 
-export default function ServiceSidebar({ currentSlug }: ServiceSidebarProps) {
+export default async function ServiceSidebar({ currentSlug }: ServiceSidebarProps) {
+  await connectDB();
+  const servicesData = await Service.find({ isActive: true }).select("title slug").lean();
   return (
     <aside className="w-full lg:w-[320px] xl:w-[380px] flex-shrink-0 flex flex-col gap-10 lg:sticky lg:top-32">
       
@@ -16,11 +19,11 @@ export default function ServiceSidebar({ currentSlug }: ServiceSidebarProps) {
           Our Services
         </h4>
         <div className="flex flex-col">
-          {servicesData.map((svc, i) => {
+          {servicesData.map((svc) => {
             const isActive = svc.slug === currentSlug;
             return (
               <Link
-                key={i}
+                key={svc.slug}
                 href={`/services/${svc.slug}`}
                 className={`flex items-center justify-between py-4 px-6 border-b border-[#222] last:border-b-0 transition-all duration-300 font-semibold group
                   ${isActive ? "bg-[var(--color-primary)] text-white border-b-transparent" : "text-[#999] hover:bg-[var(--color-primary)] hover:text-white"}`}

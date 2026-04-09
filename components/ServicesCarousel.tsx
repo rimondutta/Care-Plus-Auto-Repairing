@@ -41,9 +41,7 @@ const ICON_MAP: Record<string, LucideIcon> = {
   Settings2,
 };
 
-const services = servicesData.slice(0, 8); // Show first 8 services in carousel
-
-export default function ServicesCarousel() {
+export default function ServicesCarousel({ services = servicesData.slice(0, 8) }: { services?: any[] }) {
   const { ref, isVisible } = useScrollAnimation();
   const carouselRef = useRef<HTMLDivElement>(null);
 
@@ -127,11 +125,11 @@ export default function ServicesCarousel() {
           }`}
           style={{ scrollbarWidth: "none" /* Firefox */, msOverflowStyle: "none" /* IE/Edge */ }}
         >
-          {services.map((service, index) => {
+          {services.map((service: any, index: number) => {
             const Icon = ICON_MAP[service.icon] || Settings;
             return (
               <div 
-                key={index} 
+                key={service._id || service.slug || index} 
                 className="min-w-[85vw] md:min-w-[45vw] lg:min-w-[30vw] bg-[var(--color-bgDark2)] bg-cover bg-center p-8 snap-center group relative overflow-hidden flex flex-col justify-between hover:-translate-y-2 transition-transform duration-300"
                 style={{ backgroundImage: `url('${service.image}')` }}
               >

@@ -36,6 +36,19 @@ export interface Service {
     question: string;
     answer: string;
   }[];
+  testimonialText?: string;
+  testimonials?: {
+    name: string;
+    role: string;
+    review: string;
+    rating: number;
+    date: string;
+  }[];
+  workProcessProcessText?: string;
+  workProcess?: {
+    title: string;
+    description: string;
+  }[];
 }
 
 export interface FilterTab {

@@ -10,6 +10,7 @@ export function useContactForm() {
     phone: '',
     subject: '',
     service: 'Select a Service',
+    preferredDate: '',
     message: '',
   });
 
@@ -42,6 +43,11 @@ export function useContactForm() {
       newErrors.message = 'Message content is required';
     } else if (data.message.length < 10) {
       newErrors.message = 'Message must be at least 10 characters long';
+    }
+
+    if (!data.preferredDate || data.preferredDate === '') {
+      // In a real app we'd also validate that it's in the future
+      // (errors as any).preferredDate = 'Preferred date is required';
     }
 
     return newErrors;
@@ -81,10 +87,28 @@ export function useContactForm() {
       setStatus('submitting');
       
       try {
-        // Simulate async API call
-        await new Promise((resolve) => setTimeout(resolve, 1500));
+        const response = await fetch('/api/bookings', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            customerName: formData.name,
+            email: formData.email,
+            phone: formData.phone || 'N/A',
+            serviceType: formData.service !== 'Select a Service' ? formData.service : 'General Inquiry',
+            preferredDate: formData.preferredDate || new Date().toISOString(),
+            notes: `Subject: ${formData.subject}\n\nMessage: ${formData.message}`
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to submit booking');
+        }
+
         setStatus('success');
-      } catch {
+      } catch (error) {
+        console.error('Submission error:', error);
         setStatus('error');
       }
     }
@@ -97,6 +121,7 @@ export function useContactForm() {
       phone: '',
       subject: '',
       service: 'Select a Service',
+      preferredDate: '',
       message: '',
     });
     setErrors({});

@@ -15,9 +15,9 @@ export default function PartnerLogos() {
         
         {/* Responsive Scrolling Container for logos */}
         <div className="flex xl:justify-between items-center gap-12 md:gap-16 lg:gap-20 overflow-x-auto pb-6 md:pb-0 scrollbar-hide snap-x">
-          {logos.map((logo, idx) => (
+          {logos.map((logo) => (
             <div 
-              key={idx} 
+              key={logo.title} 
               title={logo.title}
               className="flex-shrink-0 flex items-center justify-center group opacity-40 hover:opacity-100 transition-opacity duration-300 snap-center min-w-[80px] md:min-w-[100px]"
             >

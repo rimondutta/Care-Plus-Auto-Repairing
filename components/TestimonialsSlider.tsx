@@ -101,7 +101,7 @@ export default function TestimonialsSlider() {
                       {/* Stars */}
                       <div className="flex gap-1 mb-4 md:mb-6">
                         {[...Array(test.rating)].map((_, i) => (
-                          <Star key={i} className="w-4 h-4 md:w-5 md:h-5 text-yellow-500 fill-yellow-500" />
+                          <Star key={`${test.id}-star-${i}`} className="w-4 h-4 md:w-5 md:h-5 text-yellow-500 fill-yellow-500" />
                         ))}
                       </div>
                       
@@ -129,12 +129,12 @@ export default function TestimonialsSlider() {
 
           {/* Vertical Pagination (Right side) */}
           <div className="w-12 flex flex-col items-center justify-center gap-4 ml-8 relative z-20">
-            {testimonials.map((_, index) => (
+            {testimonials.map((test) => (
               <button
-                key={index}
-                onClick={() => setCurrent(index)}
+                key={`test-indicator-${test.id}`}
+                onClick={() => setCurrent(testimonials.findIndex(t => t.id === test.id))}
                 className={`w-3 rounded-full transition-all duration-300 ${
-                  index === current 
+                  testimonials[current].id === test.id 
                     ? "h-12 bg-[var(--color-primary)]" 
                     : "h-3 bg-white/20 hover:bg-white/50"
                 }`}

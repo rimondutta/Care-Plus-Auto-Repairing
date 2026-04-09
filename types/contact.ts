@@ -6,6 +6,7 @@ export interface ContactFormData {
   phone?: string;
   subject: string;
   service: string;
+  preferredDate: string;
   message: string;
 }
 

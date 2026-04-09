@@ -3,39 +3,26 @@
 import { useEffect, useState } from "react";
 import { Star, ChevronLeft, ChevronRight, Quote } from "lucide-react";
 
-const testimonials = [
-  {
-    name: "ALEXANDER G. RAY",
-    role: "Happy Client",
-    review: "The engine diagnostics and repair service at Care Plus Auto Repairing was exceptional. My car feels like new again, and the team provided professional advice throughout the process. Highly recommended!",
-    rating: 5,
-    date: "March 15, 2026"
-  },
-  {
-    name: "SARAH JENKINS",
-    role: "Regular Customer",
-    review: "Fast, reliable, and transparent pricing. I've been bringing my vehicles here for years and they never disappoint. The digital reporting after the service is a great touch.",
-    rating: 5,
-    date: "February 28, 2026"
-  },
-  {
-    name: "MICHAEL CHEN",
-    role: "Vehicle Owner",
-    review: "Professional service from start to finish. They explained exactly what was wrong with my engine and showed me the parts they replaced. Great communication!",
-    rating: 4,
-    date: "January 14, 2026"
-  }
-];
+interface Testimonial {
+  name: string;
+  role: string;
+  review: string;
+  rating: number;
+  date: string;
+}
 
-export default function ServiceTestimonials() {
+export default function ServiceTestimonials({ testimonials }: { testimonials: Testimonial[] }) {
   const [current, setCurrent] = useState(0);
 
   useEffect(() => {
+    if (!testimonials || testimonials.length === 0) return;
     const timer = setInterval(() => {
       setCurrent((prev) => (prev + 1) % testimonials.length);
     }, 5000);
     return () => clearInterval(timer);
-  }, []);
+  }, [testimonials]);
+
+  if (!testimonials || testimonials.length === 0) return null;
 
   const next = () => setCurrent((prev) => (prev + 1) % testimonials.length);
   const prev = () => setCurrent((prev) => (prev - 1 + testimonials.length) % testimonials.length);
@@ -51,19 +38,19 @@ export default function ServiceTestimonials() {
           {[...Array(5)].map((_, i) => (
             <Star 
               key={i} 
-              className={`w-4 h-4 ${i < testimonials[current].rating ? "fill-[var(--color-primary)] text-[var(--color-primary)]" : "text-[#444]"}`} 
+              className={`w-4 h-4 ${i < testimonials[current]?.rating ? "fill-[var(--color-primary)] text-[var(--color-primary)]" : "text-[#444]"}`} 
             />
           ))}
         </div>
 
         <p className="text-white text-lg md:text-xl font-medium leading-relaxed mb-8 italic">
-          &quot;{testimonials[current].review}&quot;
+          &quot;{testimonials[current]?.review}&quot;
         </p>
 
         <div className="flex items-center justify-between">
           <div className="flex flex-col">
-            <span className="text-white font-bold text-lg">{testimonials[current].name}</span>
-            <span className="text-[#888] text-sm uppercase tracking-widest">{testimonials[current].role}</span>
+            <span className="text-white font-bold text-lg">{testimonials[current]?.name}</span>
+            <span className="text-[#888] text-sm uppercase tracking-widest">{testimonials[current]?.role}</span>
           </div>
           
           <div className="flex gap-3">

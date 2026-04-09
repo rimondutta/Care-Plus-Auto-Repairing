@@ -1,30 +1,19 @@
 import { Metadata } from "next";
 import BlogHero from "@/components/blog/BlogHero";
 import BlogCard from "@/components/blog/BlogCard";
-import blogData from "@/data/blog.json";
+import { connectDB } from "@/lib/mongodb";
+import Post from "@/models/Post";
 
 export const metadata: Metadata = {
   title: "Inside Care Plus | Automotive Blog & Expert Guides",
   description: "Explore our collection of expert automotive repair guides, maintenance tips, and industry insights from the master technicians at Care Plus Dubai.",
-  openGraph: {
-    title: "Inside Care Plus | Automotive Blog & Expert Guides",
-    description: "Expert maintenance tips and luxury car care guides from Dubai's master technicians.",
-    url: "https://careplusauto.vercel.app/blog",
-    siteName: "Care Plus Auto Repairing",
-    images: [
-      {
-        url: "/logo/care-plus-logo.png",
-        width: 1200,
-        height: 630,
-        alt: "Care Plus Blog",
-      },
-    ],
-    locale: "en_US",
-    type: "website",
-  },
 };
 
-export default function BlogListingPage() {
+export default async function BlogListingPage() {
+  await connectDB();
+  const posts = await Post.find({ status: "published" }).sort({ publishedAt: -1 }).lean();
+  const serializedPosts = JSON.parse(JSON.stringify(posts));
+
   return (
     <main className="min-h-screen bg-[#110E10]">
       
@@ -65,7 +54,7 @@ export default function BlogListingPage() {
 
           {/* Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
-            {blogData.map((post) => (
+            {serializedPosts.map((post: any) => (
               <BlogCard key={post.slug} post={post} />
             ))}
           </div>

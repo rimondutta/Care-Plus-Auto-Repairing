@@ -115,24 +115,38 @@ export default function ContactForm() {
           </div>
         </div>
 
-        {/* Service Select */}
-        <div className="flex flex-col gap-1.5 relative">
-          <label className="text-[#999] text-[10px] font-black uppercase tracking-widest heading-font ml-1">Service Type</label>
-          <div className="relative group">
-            <select 
-              value={formData.service}
-              onChange={(e) => handleChange('service', e.target.value)}
-              className="w-full bg-[#110E10] border border-[#2e2e2e] focus:border-[#D70006] focus:ring-1 focus:ring-[#D70006]/30 px-5 py-4 text-white outline-none transition-all appearance-none font-medium tracking-wide"
-            >
-              <option className="bg-[#1B1B1B]">Select a Service</option>
-              <option className="bg-[#1B1B1B]">Engine Repair</option>
-              <option className="bg-[#1B1B1B]">Tire Change & Repair</option>
-              <option className="bg-[#1B1B1B]">Car Denting Repair</option>
-              <option className="bg-[#1B1B1B]">Battery Check</option>
-              <option className="bg-[#1B1B1B]">Ceramic Coating</option>
-              <option className="bg-[#1B1B1B]">Other</option>
-            </select>
-            <ChevronDown className="absolute right-5 top-1/2 -translate-y-1/2 text-[#D70006] pointer-events-none group-focus-within:rotate-180 transition-transform duration-300" />
+        {/* Service & Date Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="flex flex-col gap-1.5 relative">
+            <label className="text-[#999] text-[10px] font-black uppercase tracking-widest heading-font ml-1">Service Type</label>
+            <div className="relative group">
+              <select 
+                value={formData.service}
+                onChange={(e) => handleChange('service', e.target.value)}
+                className="w-full bg-[#110E10] border border-[#2e2e2e] focus:border-[#D70006] focus:ring-1 focus:ring-[#D70006]/30 px-5 py-4 text-white outline-none appearance-none font-medium tracking-wide"
+              >
+                <option value="Select a Service" className="bg-[#1B1B1B]">Select a Service</option>
+                <option value="Engine Repair" className="bg-[#1B1B1B]">Engine Repair</option>
+                <option value="Tire Change & Repair" className="bg-[#1B1B1B]">Tire Change & Repair</option>
+                <option value="Car Denting Repair" className="bg-[#1B1B1B]">Car Denting Repair</option>
+                <option value="Battery Check" className="bg-[#1B1B1B]">Battery Check</option>
+                <option value="Ceramic Coating" className="bg-[#1B1B1B]">Ceramic Coating</option>
+                <option value="Other" className="bg-[#1B1B1B]">Other</option>
+              </select>
+              <ChevronDown className="absolute right-5 top-1/2 -translate-y-1/2 text-[#D70006] pointer-events-none group-focus-within:rotate-180 transition-transform duration-300" />
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-1.5">
+            <label className="text-[#999] text-[10px] font-black uppercase tracking-widest heading-font ml-1">Preferred Date*</label>
+            <input 
+              type="date" 
+              value={formData.preferredDate}
+              onChange={(e) => handleChange('preferredDate', e.target.value)}
+              onBlur={() => handleBlur('preferredDate')}
+              min={new Date().toISOString().split('T')[0]}
+              className={`bg-[#110E10] border border-[#2e2e2e] focus:border-[#D70006] focus:ring-1 focus:ring-[#D70006]/30 px-5 py-4 text-white outline-none transition-all font-medium tracking-wide [color-scheme:dark]`}
+            />
           </div>
         </div>
 
