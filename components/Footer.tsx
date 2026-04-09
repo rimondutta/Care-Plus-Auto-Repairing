@@ -30,7 +30,7 @@ const Linkedin = ({ className }: { className?: string }) => (
 );
 
 export default function Footer() {
-  const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
+  const [currentYear, setCurrentYear] = useState<number | null>(null);
 
   useEffect(() => {
     setCurrentYear(new Date().getFullYear());
@@ -58,7 +58,7 @@ export default function Footer() {
                 <MapPin className="text-[var(--color-primary)] w-5 h-5 shrink-0 mt-1" />
                 <p className="text-[var(--color-textLight)] text-sm">
                   <strong className="block text-white mb-1">VISIT OUR LOCATION</strong>
-                  Dubai, United Arab Emirates
+                  9 19dStreet - 3 St - Al Qouz Ind.third - Dubai - United Arab Emirates
                 </p>
               </div>
             </div>
@@ -89,11 +89,18 @@ export default function Footer() {
               Useful Links
             </h3>
             <ul className="flex flex-col gap-3">
-              {['About Workshop', 'Membership Plans', 'Opening Hours', 'Meet Our Mechanics', 'Contact Support'].map((item, i) => (
+              {[
+                { name: 'About Workshop', href: '#' },
+                { name: 'Latest Blog', href: '/blog' },
+                { name: 'Membership Plans', href: '#' },
+                { name: 'Opening Hours', href: '#' },
+                { name: 'Meet Our Mechanics', href: '#' },
+                { name: 'Contact Support', href: '/contact' }
+              ].map((item, i) => (
                 <li key={i}>
-                  <Link href="#" className="text-[var(--color-textMuted)] hover:text-[var(--color-primary)] transition-colors flex items-center gap-2 text-sm group">
+                  <Link href={item.href} className="text-[var(--color-textMuted)] hover:text-[var(--color-primary)] transition-colors flex items-center gap-2 text-sm group">
                     <ArrowRight className="w-4 h-4 text-[var(--color-primary)] opacity-0 -ml-6 group-hover:opacity-100 group-hover:ml-0 transition-all" />
-                    {item}
+                    {item.name}
                   </Link>
                 </li>
               ))}
@@ -129,8 +136,11 @@ export default function Footer() {
 
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-neutral-800 flex flex-col md:flex-row justify-between items-center gap-6 md:gap-4">
-          <p className="text-[var(--color-textMuted)] text-sm text-center md:text-left">
-            &copy; {currentYear} Care Plus Auto Repairing. All Rights Reserved. | Developed by <a href="https://rimondutta.vercel.app/" target="_blank" rel="noopener noreferrer" className="text-white hover:text-[var(--color-primary)] transition-colors underline underline-offset-4 decoration-[var(--color-primary)]/30">Rimon Dutta</a>
+          <p 
+            className="text-[var(--color-textMuted)] text-sm text-center md:text-left"
+            suppressHydrationWarning
+          >
+            &copy; {currentYear || '2026'} Care Plus Auto Repairing. All Rights Reserved. | Developed by <a href="https://rimondutta.vercel.app/" target="_blank" rel="noopener noreferrer" className="text-white hover:text-[var(--color-primary)] transition-colors underline underline-offset-4 decoration-[var(--color-primary)]/30">Rimon Dutta</a>
           </p>
           
           <div className="flex items-center gap-4">

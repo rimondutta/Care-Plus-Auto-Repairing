@@ -28,7 +28,7 @@ export default function Navbar() {
     { name: "HOME", href: "/" },
     { name: "PAGES", href: "#" },
     { name: "SERVICES", href: "/services" },
-    { name: "BLOG", href: "/#blog" },
+    { name: "BLOG", href: "/blog" },
     { name: "CONTACT US", href: "/contact" },
   ];
 
@@ -58,7 +58,7 @@ export default function Navbar() {
             </div>
             <div className="flex items-center gap-2 pl-6">
               <MapPin className="w-3.5 h-3.5 text-[var(--color-primary)]" />
-              <span className="font-medium tracking-wider">Dubai, United Arab Emirates</span>
+              <span className="font-medium tracking-wider">9 19dStreet - 3 St - Al Qouz Ind.third - Dubai - United Arab Emirates</span>
             </div>
           </div>
 

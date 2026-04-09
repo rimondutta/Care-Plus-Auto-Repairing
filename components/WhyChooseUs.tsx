@@ -7,25 +7,25 @@ const features = [
   {
     icon: <ShieldCheck className="w-8 h-8" />,
     title: "Car Protection & Fitness",
-    desc: "Complete protective ceramic coating.",
+    desc: "We provide comprehensive protective ceramic coating services and structural fitness checks to ensure your vehicle remains in peak condition and retains its original aesthetic value.",
     isActive: true,
   },
   {
     icon: <Droplet className="w-8 h-8" />,
     title: "Complimentary Car Wash",
-    desc: "Premium wash with every repair service.",
+    desc: "Every repair service includes a premium high-pressure car wash utilizing PH-balanced chemicals to protect your paint while removing stubborn road grime and contaminants.",
     isActive: false,
   },
   {
     icon: <Settings2 className="w-8 h-8" />,
     title: "Expert Engine & Balancing",
-    desc: "Laser precision engine diagnostic tuning.",
+    desc: "Our workshop uses laser-precision diagnostic equipment for engine tuning and wheel balancing, ensuring a smooth ride and optimal fuel efficiency for your vehicle.",
     isActive: false,
   },
   {
     icon: <Wind className="w-8 h-8" />,
     title: "Windshield & Glass Repair",
-    desc: "Shatter-free resin crack restorations.",
+    desc: "We specialize in shatter-free resin restorations for windshield cracks and full glass replacements using OEM-standard materials for maximum visibility and safety.",
     isActive: true,
   },
 ];

@@ -61,6 +61,81 @@ export default async function DynamicServicePage({ params }: Props) {
 
       {/* 3. CTA Banner */}
       <ServiceCTABanner />
+
+      {/* Structured Data (Schema.org) */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Service",
+            "name": service.title,
+            "description": service.shortDescription || service.description,
+            "provider": {
+              "@type": "AutoRepair",
+              "name": "Care Plus Auto Repairing",
+              "url": "https://careplusauto.vercel.app",
+              "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "9 19dStreet - 3 St - Al Qouz Ind.third",
+                "addressLocality": "Dubai",
+                "addressRegion": "Dubai",
+                "addressCountry": "AE"
+              }
+            },
+            "areaServed": "Dubai, UAE",
+            "hasOfferCatalog": {
+              "@type": "OfferCatalog",
+              "name": "Automotive Repair Services",
+              "itemListElement": [
+                {
+                  "@type": "Offer",
+                  "itemOffered": {
+                    "@type": "Service",
+                    "name": service.title
+                  }
+                }
+              ]
+            }
+          })
+        }}
+      />
+
+      {/* FAQ Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": (service.faqs && service.faqs.length > 0 ? service.faqs : [
+              {
+                question: "How long does a standard vehicle repair take?",
+                answer: "The duration depends on the complexity of the issue. Routine maintenance typically takes 2-4 hours, while complex engine or transmission work might require 2-3 business days."
+              },
+              {
+                question: "Do you use genuine parts for all repairs?",
+                answer: "Yes, we prioritize the use of 100% genuine OEM (Original Equipment Manufacturer) parts for all vehicle services."
+              },
+              {
+                question: "Can I get a price estimate over the phone?",
+                answer: "We can provide general estimates, but a precise quote requires a physical diagnostic of your vehicle."
+              },
+              {
+                question: "Is there a warranty on your repair services?",
+                answer: "We stand behind our work with a comprehensive service warranty on both parts and labor."
+              }
+            ]).map(faq => ({
+              "@type": "Question",
+              "name": faq.question,
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": faq.answer
+              }
+            }))
+          })
+        }}
+      />
     </div>
   );
 }

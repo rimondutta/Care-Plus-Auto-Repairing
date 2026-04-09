@@ -77,8 +77,8 @@ export default function ContactInfoStrip() {
           <InfoBox 
             icon={<MapPin className="w-8 h-8" />}
             label="VISIT OUR LOCATION"
-            value="Dubai, United Arab Emirates"
-            sub="Homestead, FL"
+            value="9 19dStreet - 3 St"
+            sub="Al Qouz Ind.third - Dubai - United Arab Emirates"
             delay={200}
             showDivider={false}
           />

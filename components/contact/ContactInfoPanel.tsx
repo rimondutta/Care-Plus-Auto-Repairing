@@ -29,7 +29,7 @@ export default function ContactInfoPanel() {
   const contactRows = [
     { icon: <Phone size={18} />, label: "Phone", value: "+971 52 803 1110", href: "tel:+971 52 803 1110" },
     { icon: <Mail size={18} />, label: "Email", value: "info@careplus.com", href: "mailto:info@careplus.com" },
-    { icon: <MapPin size={18} />, label: "Address", value: "Dubai, United Arab Emirates", href: undefined },
+    { icon: <MapPin size={18} />, label: "Address", value: "9 19dStreet - 3 St - Al Qouz Ind.third - Dubai - United Arab Emirates", href: undefined },
   ];
 
   return (

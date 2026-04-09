@@ -32,6 +32,10 @@ export interface Service {
     role: string;
     image?: string;
   }[];
+  faqs?: {                    // Frequently Asked Questions
+    question: string;
+    answer: string;
+  }[];
 }
 
 export interface FilterTab {

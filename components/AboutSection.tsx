@@ -75,10 +75,13 @@ export default function AboutSection() {
               }`}
             >
               <p>
-                From simple maintenance to complete engine rebuilds, Care Plus Auto Repairing provides elite-level car servicing that prioritizes quality, precision, and longevity. We believe every vehicle deserves meticulous attention and premium parts.
+                From simple maintenance to complete engine rebuilds, Care Plus Auto Repairing provides elite-level car servicing that prioritizes quality, precision, and longevity. We believe every vehicle deserves meticulous attention and premium parts. Our workshop is equipped with the latest automotive technology, allowing us to perform deep diagnostics and complex repairs with absolute accuracy.
               </p>
               <p>
-                Our certified mechanics utilize state-of-the-art diagnostic equipment to pinpoint underlying issues that other shops miss. Experience true automotive performance care designed to extend the lifespan of your passion.
+                Our journey began with a simple mission: to provide transparent, reliable, and high-quality automotive care that vehicle owners can trust. Over the years, we have built a reputation for excellence by consistently delivering results that exceed expectations. Whether it’s a modern performance car or a reliable family SUV, we treat every machine with the respect it deserves.
+              </p>
+              <p>
+                Our certified mechanics utilize state-of-the-art diagnostic equipment to pinpoint underlying issues that other shops miss. We don't just fix symptoms; we solve the root cause of the problem to ensure your safety and vehicle reliability. Experience true automotive performance care designed to extend the lifespan of your passion and keep you moving with confidence.
               </p>
             </div>
 
